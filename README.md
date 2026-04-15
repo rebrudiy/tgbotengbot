@@ -1,5 +1,7 @@
 # engimprover
 
+> vibecoded in 5 minutes, no brain cells used
+
 Telegram bot that roasts your English and tells you how to fix it.
 
 ## What it does
