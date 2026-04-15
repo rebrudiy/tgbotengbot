@@ -18,8 +18,16 @@ def _is_private(update: Update) -> bool:
 async def handle_bot_added(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Leave any group the bot was added to by someone other than the owner."""
     result: ChatMemberUpdated = update.my_chat_member
-    if result.new_chat_member.status not in ("member", "administrator"):
+    old_status = result.old_chat_member.status
+    new_status = result.new_chat_member.status
+
+    # Only react when bot is freshly added (was not a member before)
+    was_member = old_status in ("member", "administrator", "restricted")
+    is_member = new_status in ("member", "administrator")
+
+    if was_member or not is_member:
         return
+
     if result.from_user.id != OWNER_ID:
         await context.bot.leave_chat(result.chat.id)
 
